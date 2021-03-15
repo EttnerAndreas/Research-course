@@ -4,7 +4,7 @@ library(ggpubr)
 
 
 data <- read_excel("analysis/data.xlsx")
-data <- read_excel("../data.xlsx")
+
 
 getwd()
 View(data)
@@ -168,48 +168,114 @@ df_free
 #'
 #'
 df_free <- data %>%
-  filter(Location %in% c("a","c")) %>%
-  filter(Sex %in% c("m", "f")) %>%
-  group_by(Location,Sex, Mask) %>%
-  summarise(counts = n())
-df_free
-
-
-df2_free <- data.frame(Location=rep(c("obligatory location A","obligytory location c"), each=4),
-                       Sex=rep(c("female no mask","female mask","male no mask","male mask"),2),
-                       counts=df_free$counts)
-df2_free
-
-ggplot(data=df2_free, aes(x=Sex, y=counts, fill=Location)) +
-  geom_bar(stat="identity", position=position_dodge())+
-  scale_fill_manual(values = c("#FEC804", "#F26322", "#7A2D59", "#181B46"))
-
-
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-# FÜR LOCATION B UND D
-df_free <- data %>%
-  filter(Location %in% c("b","d")) %>% ' LOCATION FILTER'
+  filter(Location %in% c("a","c")) %>% #' LOCATION FILTER'
   filter(Sex %in% c("m", "f")) %>%  # MANN FRAU FILTER
   group_by(Location,Sex, Mask) %>%
   summarise(counts = n())
 df_free
+colnames(df_free) = c("location_obligatory","Sex", "Mask", "counts")
+df_free
 
-
-df2_free <- data.frame(Location=rep(c("obligatory location B","obligytory location D"), each=4),
+df2_free <- data.frame(location_obligatory =rep(c("obligatory location B","obligytory location D"), each=4),
                        Sex=rep(c("female no mask","female mask","male no mask","male mask"),2),
                        counts=df_free$counts)
 df2_free
 
-ggplot(data=df2_free, aes(x=Sex, y=counts, fill=Location)) +
+ggplot(data=df2_free, aes(x=Sex, y=counts, fill=location_obligatory)) +
   geom_bar(stat="identity", position=position_dodge())+
-  scale_fill_manual(values = c("#FEC804", "#F26322", "#7A2D59", "#181B46"))  # HEX; FARBCODE
+  scale_fill_manual(values = c("#1E646E", "#002C2F"))
+
+#'
+# FÜR LOCATION B UND D
+df_free <- data %>%
+  filter(Location %in% c("b","d")) %>% #' LOCATION FILTER'
+  filter(Sex %in% c("m", "f")) %>%  # MANN FRAU FILTER
+  group_by(Location,Sex, Mask) %>%
+  summarise(counts = n())
+df_free
+colnames(df_free) = c("location_voluntary","Sex", "Mask", "counts")
+df_free
+
+df2_free <- data.frame(location_voluntary =rep(c("voluntary location B","voluntary location D"), each=4),
+                       Sex=rep(c("female no mask","female mask","male no mask","male mask"),2),
+                       counts=df_free$counts)
+df2_free
+
+ggplot(data=df2_free, aes(x=Sex, y=counts, fill=location_voluntary)) +
+  geom_bar(stat="identity", position=position_dodge())+
+  scale_fill_manual(values = c("#1E646E", "#002C2F"))  # HEX; FARBCODE
+
+
+
+#'
+#'
+#'
+#'
+#'
+#' For all!!
+data1 <- data %>%
+  filter(Sex %in% c("m", "f")) %>%  # MANN FRAU FILTER
+  group_by(Location,Sex, Mask) %>%
+  summarise(counts = n())
+data1
+colnames(data1) = c("location","Sex", "Mask", "counts")
+data1
+
+out1 <- data.frame(location =rep(c("obligatory","voluntary"), each=4),
+                       Sex=rep(c("female no mask","female mask","male no mask","male mask"),2),
+                       counts=data1$counts)
+out1
+
+ggplot(data=out1, aes(x=Sex, y=counts, fill=location)) +
+  geom_bar(stat="identity")+
+  scale_fill_manual(values = c("#1E646E", "#002C2F"))  # HEX; FARBCODE
+
+
+#'
+#'
+#'
+#'
+#'
+#' LOCATION A UND C FEMALE; MALE VERGLEICH
+data2 <- data %>%
+  filter(Location %in% c("a", "c")) %>%
+  filter(Sex %in% c("m", "f")) %>%  # MANN FRAU FILTER
+  group_by(Location,Sex,Mask) %>%
+  summarise(counts = n())
+data2
+colnames(data1) = c("location","Sex", "Mask", "counts")
+data2
+
+out2 <- data.frame(Sex=rep(c("female","male"),each=2),
+                   Mask =rep(c("NO","YES"), 1),
+                   counts=data2$counts)
+out2
+
+ggplot(data=out2, aes(x=Sex, y=counts, fill=Mask)) +
+  geom_bar(stat="identity")+
+  scale_fill_manual(values = c("#5D353e",  "#00142F"))  # HEX; FARBCODE
+
+
+
+#' LOCATION B UND D FEMALE; MALE VERGLEICH
+data2 <- data %>%
+  filter(Location %in% c("b", "d")) %>%
+  filter(Sex %in% c("m", "f")) %>%  # MANN FRAU FILTER
+  group_by(Location,Sex,Mask) %>%
+  summarise(counts = n())
+data2
+colnames(data1) = c("location","Sex", "Mask", "counts")
+data2
+
+out2 <- data.frame(Sex=rep(c("female","male"),each=2),
+                   Mask =rep(c("NO","YES"), 1),
+                   counts=data2$counts)
+out2
+
+ggplot(data=out2, aes(x=Sex, y=counts, fill=Mask)) +
+  geom_bar(stat="identity")+
+  scale_fill_manual(values = c("#a88661", "#504E63"))  # HEX; FARBCODE
+
 
 
 
