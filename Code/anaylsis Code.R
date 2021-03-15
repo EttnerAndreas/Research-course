@@ -188,7 +188,7 @@ data2
 colnames(data1) = c("location","Sex", "Mask", "counts")
 data2
 
-out2 <- data.frame(Sex=rep(c("female","male","FEMALE","MALE"),each=4),
+out2 <- data.frame(Sex=rep(c("female","male","2xFEMALE","2xMALE"),each=4),
                    Mask =rep(c("NO","YES"), 1),
                    counts=data2$counts)
 out2
