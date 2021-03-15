@@ -3,9 +3,11 @@ library(ggplot2)
 library(ggpubr)
 
 
-data <- read_excel("C:/Users/andie/Downloads/Research skills/data.xlsx")
-View(data)
+data <- read_excel("analysis/data.xlsx")
+data <- read_excel("../data.xlsx")
 
+getwd()
+View(data)
 str(data)
 # 1: SEX as character
 # 2: Mask as numeric (recommend changing to character)
@@ -57,7 +59,6 @@ fit
 plot(fit)
 
 
-
 df <- data %>%
   filter(Sex %in% c("m", "f")) %>%
   group_by(Location,Sex, Mask) %>%
@@ -88,7 +89,11 @@ p <- ggplot(df, aes(fill = Mask,x = Location, y = counts)) +
 p
 
 
-
+df <- data %>%
+  filter(Sex %in% c("m", "f")) %>%
+  group_by(Location,Sex, Mask) %>%
+  summarise(counts = n())
+df
 df
 df$counts
 df2 <- data.frame(Location=rep(c("A", "B","C","D"), each=4),
@@ -103,3 +108,133 @@ ggplot(data=df2, aes(x=Location, y=counts, fill=Sex)) +
   scale_fill_manual(values = c("#FEC804", "#F26322", "#7A2D59", "#181B46"))
 
 
+
+
+df3 <- data.frame(Location=rep(c("Mandatory","freiwillig"), each=4),
+                  Sex=rep(c("Male","Male+Mask","Female","Female+Mask"),2),
+                  counts=df$counts)
+df3
+ggplot(data=df3, aes(x=Location, y=counts, fill=Sex)) +
+  geom_bar(stat="identity", position=position_dodge())+
+  geom_text(aes(label=counts), vjust=1.6, color="white",
+            position = position_dodge(0.8), size=4.5)+
+  scale_fill_manual(values = c("#FEC804", "#F26322", "#7A2D59", "#181B46"))
+
+
+#'
+#'
+#'
+#'
+#'
+
+df_free <- data %>%
+  filter(Location %in% c("a","b","c", "d")) %>%
+  filter(Sex %in% c("m", "f")) %>%
+  group_by(Location,Sex, Mask) %>%
+  summarise(counts = n())
+df_free
+
+
+
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+df_free <- data %>%
+  filter(Location %in% c("a","c")) %>%
+  filter(Sex %in% c("m", "f")) %>%
+  group_by(Location,Sex, Mask) %>%
+  summarise(counts = n())
+df_free
+
+
+df2_free <- data.frame(Location=rep(c("obligatory location A","obligytory location c"), each=4),
+                       Sex=rep(c("female no mask","female mask","male no mask","male mask"),2),
+                       counts=df_free$counts)
+df2_free
+
+ggplot(data=df2_free, aes(x=Sex, y=counts, fill=Location)) +
+  geom_bar(stat="identity", position=position_dodge())+
+  scale_fill_manual(values = c("#FEC804", "#F26322", "#7A2D59", "#181B46"))
+
+
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+# FÜR LOCATION B UND D
+df_free <- data %>%
+  filter(Location %in% c("b","d")) %>% ' LOCATION FILTER'
+  filter(Sex %in% c("m", "f")) %>%  # MANN FRAU FILTER
+  group_by(Location,Sex, Mask) %>%
+  summarise(counts = n())
+df_free
+
+
+df2_free <- data.frame(Location=rep(c("obligatory location B","obligytory location D"), each=4),
+                       Sex=rep(c("female no mask","female mask","male no mask","male mask"),2),
+                       counts=df_free$counts)
+df2_free
+
+ggplot(data=df2_free, aes(x=Sex, y=counts, fill=Location)) +
+  geom_bar(stat="identity", position=position_dodge())+
+  scale_fill_manual(values = c("#FEC804", "#F26322", "#7A2D59", "#181B46"))  # HEX; FARBCODE
+
+
+
+
+
+
+
+
+
+
+df2_free <- data.frame(Location=rep(c("a","b","c", "d"), each=4),
+                  Sex=rep(c("Male no mask","Male+Mask","Female no mask","Female+Mask"),2),
+                  counts=df_free$counts)
+df2_free
+
+ggplot(data=df2_free, aes(x=Location, y=counts, fill=Sex)) +
+  geom_bar(stat="identity", position=position_dodge())+
+  geom_text(aes(label=counts), vjust=1.6, color="white",
+            position = position_dodge(0.8), size=4.5)+
+  scale_fill_manual(values = c("#FEC804", "#F26322", "#7A2D59", "#181B46"))
+
+#'
+ggplot(data=df_cumsum, aes(x=dose, y=len, fill=supp)) +
+  geom_bar(stat="identity")+
+  geom_text(aes(y=label_ypos, label=len), vjust=1.6,
+            color="white", size=3.5)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()
