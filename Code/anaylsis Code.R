@@ -134,6 +134,10 @@ data2 <- data %>%
   group_by(Location,Sex,Mask) %>%
   summarise(counts = n())
 data2
+for (i in 1:8){
+  data2$counts[i]= (data2$counts[i])/500
+}
+data2
 colnames(data1) = c("location","Sex", "Mask", "counts")
 data2
 
@@ -153,11 +157,9 @@ data2 <- data %>%
   filter(Sex %in% c("m", "f")) %>%  # MANN FRAU FILTER
   group_by(Location,Sex,Mask) %>%
   summarise(counts = n())
-
 for (i in 1:8){
   data2$counts[i]= (data2$counts[i])/500
 }
-
 data2
 colnames(data1) = c("location","Sex", "Mask", "counts")
 data2
@@ -170,3 +172,6 @@ out2
 ggplot(data=out2, aes(x=Sex, y=counts, fill=Mask)) +
   geom_bar(stat="identity")+
   scale_fill_manual(values = c("#a88661", "#504E63"))  # HEX; FARBCODE
+
+
+
