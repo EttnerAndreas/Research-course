@@ -188,7 +188,7 @@ data2
 colnames(data1) = c("location","Sex", "Mask", "counts")
 data2
 
-out2 <- data.frame(Sex=rep(c("female","male","2xFEMALE","2xMALE"),each=4),
+out2 <- data.frame(Sex=rep(c("female a/c","male a/c","female b/d","male b/d"),each=2),
                    Mask =rep(c("NO","YES"), 1),
                    counts=data2$counts)
 out2
@@ -196,5 +196,64 @@ out2
 ggplot(data=out2, aes(x=Sex, y=counts, fill=Mask)) +
   geom_bar(stat="identity")+
   scale_fill_manual(values = c("#57233A" ,"#00142f"))  # HEX; FARBCODE
+
+
+#'
+#'
+#'
+#'
+#'
+#' Procental
+data2 <- data %>%
+  filter(Sex %in% c("m", "f")) %>%  # MANN FRAU FILTER
+  group_by(Location,Sex,Mask) %>%
+  summarise(counts = n())
+
+for (i in 1:8){
+  x = data2$counts[i]+ (data2$counts[i+8])
+  print(x)
+}
+data2
+#'
+#'
+#
+data2$counts[1] = data2$counts[1]/261
+data2$counts[2] = data2$counts[2]/261
+
+data2$counts[3] = data2$counts[3]/239
+data2$counts[4] = data2$counts[4]/239
+
+data2$counts[5] = data2$counts[5]/284
+data2$counts[6] = data2$counts[6]/284
+
+data2$counts[7] = data2$counts[7]/216
+data2$counts[8] = data2$counts[8]/216
+
+data2$counts[9] = data2$counts[9]/261
+data2$counts[10] = data2$counts[10]/261
+
+data2$counts[11] = data2$counts[11]/239
+data2$counts[12] = data2$counts[12]/239
+
+data2$counts[13] = data2$counts[13]/284
+data2$counts[14] = data2$counts[14]/284
+
+data2$counts[15] = data2$counts[15]/216
+data2$counts[16] = data2$counts[16]/216
+
+#'
+#'
+colnames(data1) = c("location","Sex", "Mask", "counts")
+data2
+
+out2 <- data.frame(Sex=rep(c("a/c female","a/c male","b/d female","b/d male"),each=2),
+                   Mask =rep(c("NO","YES"), 1),
+                   counts=data2$counts)
+out2
+
+ggplot(data=out2, aes(x=Sex, y=counts, fill=Mask)) +
+  geom_bar(stat="identity")+
+  scale_fill_manual(values = c("#57233A" ,"#00142f"))  # HEX; FARBCODE
+
 
 
