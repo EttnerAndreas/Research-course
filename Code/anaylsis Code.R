@@ -1,6 +1,7 @@
 library(dplyr)
 library(ggplot2)
 library(ggpubr)
+library(lme4)
 
 
 data <- read_excel("analysis/data.xlsx")
@@ -44,10 +45,27 @@ data$Sex[408] = "f"
 data$Sex[689] = "m"
 
 
-data$Mask = as.character(data$Mask)
+data$Mask = as.numeric(data$Mask)
 data$Group = as.character(data$Group)
-str(data)
+
 summary(data)
+
+###### regression model
+par(mfrow = c(2,2))
+
+
+fit <- glm(Mask ~ Sex * Location + scale(Age) + Group, data = data, family = binomial)
+fit2 <- glm(Mask ~ Sex + Location + Age + Group, data = data, family = binomial)
+fit3 <-  glm(Mask ~ Sex + (1|Location) + Age + Group, data = data, family = binomial)
+AIC(fit,fit2,fit3)
+
+
+summary(fit)
+summary(aov(fit))
+plot(fit)
+plot(fit2)
+plot(fit3)
+
 
 #'
 #'
@@ -256,4 +274,4 @@ ggplot(data=out2, aes(x=Sex, y=counts, fill=Mask)) +
   scale_fill_manual(values = c("#57233A" ,"#00142f"))  # HEX; FARBCODE
 
 
-
+fit <- glm(Mask ~ Sex + Mask, data= data)
